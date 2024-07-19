@@ -1,0 +1,232 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
+| teaches           |
++-------------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from section;
++-----------+--------+----------+------+----------+-------------+--------------+
+| course_id | sec_id | semester | year | building | room_number | time_slot_id |
++-----------+--------+----------+------+----------+-------------+--------------+
+| CS-101    | 1      | Fall     | 2017 | Packard  | 101         | H            |
+| CS-101    | 1      | Spring   | 2018 | Packard  | 101         | F            |
+| CS-190    | 1      | Spring   | 2017 | Taylor   | 3128        | E            |
+| CS-190    | 2      | Spring   | 2017 | Taylor   | 3128        | A            |
+| CS-315    | 1      | Spring   | 2018 | Watson   | 120         | D            |
++-----------+--------+----------+------+----------+-------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Fall' and year = 2017 and course_id not in (select course
+_id from section where semester = 'Spring' and year = 2018);
+Empty set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2017 and course_id not in (select cour
+se_id from section where semester = 'Fall' and year = 2018);
++-----------+
+| course_id |
++-----------+
+| CS-190    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2017 and course_id not in (select course_id from section where semester = 'Fall' and year = 2017);
++-----------+
+| course_id |
++-----------+
+| CS-190    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2017 and course_id not in (select cour
+se_id from section where semester = 'Spring' and year = 2018);
++-----------+
+| course_id |
++-----------+
+| CS-190    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2018 and course_id not in (select course_id from section where semester = 'Spring' and year = 2017);
++-----------+
+| course_id |
++-----------+
+| CS-101    |
+| CS-315    |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2018 and course_id in (select course_id from section where semester = 'Spring' and year = 2017);
+Empty set (0.00 sec)
+
+mysql> select distinct course_id from section where semester ='Spring' and year = 2018 and course_id in (select course_id from section where semester = 'Fall' and year = 2017);
++-----------+
+| course_id |
++-----------+
+| CS-101    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct name from instructor where name not in ('Mozart','Harry');
++------------+
+| name       |
++------------+
+| Srinivasan |
+| Wu         |
+| Einstein   |
+| El Said    |
+| Gold       |
++------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from instructor;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
++-------+------------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct name from instructor where name not in ('Wu','Gold');
++------------+
+| name       |
++------------+
+| Srinivasan |
+| Mozart     |
+| Einstein   |
+| El Said    |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct name from instructor where depart_name  in ('Finance','Physics');
+ERROR 1054 (42S22): Unknown column 'depart_name' in 'where clause'
+mysql> select distinct name from instructor where dept_name  in ('Finance','Physics');
++----------+
+| name     |
++----------+
+| Wu       |
+| Einstein |
+| Gold     |
++----------+
+3 rows in set (0.00 sec)
+
+mysql> select name, salary from instructor where salary > some (select salary from instructor where dept_name = 'Physics');
++----------+----------+
+| name     | salary   |
++----------+----------+
+| Wu       | 90000.00 |
+| Einstein | 95000.00 |
++----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select name, salary from instructor where salary > some (select salary from instructor where dept_name = 'Music');
++------------+----------+
+| name       | salary   |
++------------+----------+
+| Srinivasan | 65000.00 |
+| Wu         | 90000.00 |
+| Einstein   | 95000.00 |
+| El Said    | 60000.00 |
+| Gold       | 87000.00 |
++------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select name, salary,dept_name from instructor where salary > some (select salary from instructor where dept_name = 'Music');
++------------+----------+------------+
+| name       | salary   | dept_name  |
++------------+----------+------------+
+| Srinivasan | 65000.00 | Comp. Sci. |
+| Wu         | 90000.00 | Finance    |
+| Einstein   | 95000.00 | Physics    |
+| El Said    | 60000.00 | History    |
+| Gold       | 87000.00 | Physics    |
++------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from section;
++-----------+--------+----------+------+----------+-------------+--------------+
+| course_id | sec_id | semester | year | building | room_number | time_slot_id |
++-----------+--------+----------+------+----------+-------------+--------------+
+| CS-101    | 1      | Fall     | 2017 | Packard  | 101         | H            |
+| CS-101    | 1      | Spring   | 2018 | Packard  | 101         | F            |
+| CS-190    | 1      | Spring   | 2017 | Taylor   | 3128        | E            |
+| CS-190    | 2      | Spring   | 2017 | Taylor   | 3128        | A            |
+| CS-315    | 1      | Spring   | 2018 | Watson   | 120         | D            |
++-----------+--------+----------+------+----------+-------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select T.course_id from course as T where unique (select R.course_id from section as R where T.course_id = R.course_id and R.year = 2017);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'unique (select R.course_id from section as R where T.course_id = R.course_id and' at line 1
+mysql> select T.course_id from course as T where 1>= (select (R.course_id) from section as R where T.course_id = R.course_id and R.year = 2017);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select T.course_id from course as T where 1>= (select (R.course_id) from section as R where T.course_id = R.course_id and R.year = 2018);
++-----------+
+| course_id |
++-----------+
+| CS-101    |
+| CS-315    |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select T.course_id from course as T where 1 = (select (R.course_id) from section as R where T.course_id = R.course_id and R.year = 2018);
+Empty set (0.00 sec)
+
+mysql> select T.course_id from course as T where 1 = (select (R.course_id) from section as R where T.course_id = R.course_id and R.year = 2017);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select max (tot_salary) from (select dept_name, sum(salary) from instructor group by dept_name) as dept_total(dept_name, total_salary);
+ERROR 1630 (42000): FUNCTION college.max does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select max (tot_salary) as Max_salary from (select dept_name, sum(salary) from instructor group by dept_name) as dept_total(dept_name, total_salary);
+
+ERROR 1630 (42000): FUNCTION college.max does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select max (total_salary) as Max_salary from (select dept_name, sum(salary) from instructor group by dept_name) as dept_total(dept_name, total_salary);
+ERROR 1630 (42000): FUNCTION college.max does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> select max (total_salary) as Max_salary from (select dept_name, sum(salary) from instructor group by dept_name) as dept_total(dept_name, total_salary);
+ERROR 1630 (42000): FUNCTION college.max does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql> SELECT MAX(total_salary) AS Max_salary
+    -> FROM (
+    ->     SELECT dept_name, SUM(salary) AS total_salary
+    ->     FROM instructor
+    ->     GROUP BY dept_name
+    -> ) AS dept_total;
++------------+
+| Max_salary |
++------------+
+|  182000.00 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(total_salary) as Max_salary from (select dept_name, sum(salary) from instructor group by dept_name) as dept_total(dept_name, total_salary);
++------------+
+| Max_salary |
++------------+
+|  182000.00 |
++------------+
+1 row in set (0.00 sec)

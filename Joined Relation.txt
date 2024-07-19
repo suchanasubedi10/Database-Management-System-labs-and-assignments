@@ -1,0 +1,246 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
+| teaches           |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> create  table Student
+    -> (rollnum int,
+    -> name varchar(25),
+    -> address varchar(25),
+    -> age int,
+    -> primary key (rollnum));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create  table Subject
+    -> (rollnum int,
+    -> subId int,
+    -> Subject_name varchar(25),
+    -> credit int,
+    -> primary key (subId),
+    -> foreign key (rollnum) references Student(rollnum));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
+| student           |
+| subject           |
+| teaches           |
++-------------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into student values ('00128', 'Zhang', 'Comp. Sci.', '102');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student values ('12345', 'Shankar', 'Comp. Sci.', '32');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('19991', 'Brandt', 'History', '80');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('23121', 'Chavez', 'Finance', '110');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('44553', 'Peltier', 'Physics', '56');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('45678', 'Levy', 'Physics', '46');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('54321', 'Williams', 'Comp. Sci.', '54');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('55739', 'Sanchez', 'Music', '38');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('70557', 'Snow', 'Physics', '0');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('76543', 'Brown', 'Comp. Sci.', '58');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('76653', 'Aoi', 'Elec. Eng.', '60');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('98765', 'Bourikas', 'Elec. Eng.', '98');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student values ('98988', 'Tanaka', 'Biology', '120');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from stident;
+ERROR 1146 (42S02): Table 'college.stident' doesn't exist
+mysql> select * from student;
++---------+----------+------------+------+
+| rollnum | name     | address    | age  |
++---------+----------+------------+------+
+|     128 | Zhang    | Comp. Sci. |  102 |
+|   12345 | Shankar  | Comp. Sci. |   32 |
+|   19991 | Brandt   | History    |   80 |
+|   23121 | Chavez   | Finance    |  110 |
+|   44553 | Peltier  | Physics    |   56 |
+|   45678 | Levy     | Physics    |   46 |
+|   54321 | Williams | Comp. Sci. |   54 |
+|   55739 | Sanchez  | Music      |   38 |
+|   70557 | Snow     | Physics    |    0 |
+|   76543 | Brown    | Comp. Sci. |   58 |
+|   76653 | Aoi      | Elec. Eng. |   60 |
+|   98765 | Bourikas | Elec. Eng. |   98 |
+|   98988 | Tanaka   | Biology    |  120 |
++---------+----------+------------+------+
+13 rows in set (0.00 sec)
+
+mysql> insert into subject values(101,"205","DSA",4);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`subject`, CONSTRAINT `subject_ibfk_1` FOREIGN KEY (`rollnum`) REFERENCES `student` (`rollnum`))
+mysql> insert into subject values(128,"205","DSA",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into subject values(102,"315","DBMS",4);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`subject`, CONSTRAINT `subject_ibfk_1` FOREIGN KEY (`rollnum`) REFERENCES `student` (`rollnum`))
+mysql> insert into subject values(00128,"315","DBMS",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into subject values(19991,"208","DS",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into subject values(76653,"307","SE",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into subject values(76653,"211","c++",4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into subject values(98988,"505","AI",4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from subject;
++---------+-------+--------------+--------+
+| rollnum | subId | Subject_name | credit |
++---------+-------+--------------+--------+
+|     128 |   205 | DSA          |      4 |
+|   19991 |   208 | DS           |      4 |
+|   76653 |   211 | c++          |      4 |
+|   76653 |   307 | SE           |      4 |
+|     128 |   315 | DBMS         |      4 |
+|   98988 |   505 | AI           |      4 |
++---------+-------+--------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from student natural join subject;
++---------+--------+------------+------+-------+--------------+--------+
+| rollnum | name   | address    | age  | subId | Subject_name | credit |
++---------+--------+------------+------+-------+--------------+--------+
+|     128 | Zhang  | Comp. Sci. |  102 |   205 | DSA          |      4 |
+|   19991 | Brandt | History    |   80 |   208 | DS           |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   211 | c++          |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   307 | SE           |      4 |
+|     128 | Zhang  | Comp. Sci. |  102 |   315 | DBMS         |      4 |
+|   98988 | Tanaka | Biology    |  120 |   505 | AI           |      4 |
++---------+--------+------------+------+-------+--------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from student inner join subject on student.rollnum = subject.rollnum;
++---------+--------+------------+------+---------+-------+--------------+--------+
+| rollnum | name   | address    | age  | rollnum | subId | Subject_name | credit |
++---------+--------+------------+------+---------+-------+--------------+--------+
+|     128 | Zhang  | Comp. Sci. |  102 |     128 |   205 | DSA          |      4 |
+|   19991 | Brandt | History    |   80 |   19991 |   208 | DS           |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   76653 |   211 | c++          |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   76653 |   307 | SE           |      4 |
+|     128 | Zhang  | Comp. Sci. |  102 |     128 |   315 | DBMS         |      4 |
+|   98988 | Tanaka | Biology    |  120 |   98988 |   505 | AI           |      4 |
++---------+--------+------------+------+---------+-------+--------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from student left join subject on student.rollnum = subject.rollnum;
++---------+----------+------------+------+---------+-------+--------------+--------+
+| rollnum | name     | address    | age  | rollnum | subId | Subject_name | credit |
++---------+----------+------------+------+---------+-------+--------------+--------+
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   205 | DSA          |      4 |
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   315 | DBMS         |      4 |
+|   12345 | Shankar  | Comp. Sci. |   32 |    NULL |  NULL | NULL         |   NULL |
+|   19991 | Brandt   | History    |   80 |   19991 |   208 | DS           |      4 |
+|   23121 | Chavez   | Finance    |  110 |    NULL |  NULL | NULL         |   NULL |
+|   44553 | Peltier  | Physics    |   56 |    NULL |  NULL | NULL         |   NULL |
+|   45678 | Levy     | Physics    |   46 |    NULL |  NULL | NULL         |   NULL |
+|   54321 | Williams | Comp. Sci. |   54 |    NULL |  NULL | NULL         |   NULL |
+|   55739 | Sanchez  | Music      |   38 |    NULL |  NULL | NULL         |   NULL |
+|   70557 | Snow     | Physics    |    0 |    NULL |  NULL | NULL         |   NULL |
+|   76543 | Brown    | Comp. Sci. |   58 |    NULL |  NULL | NULL         |   NULL |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   211 | c++          |      4 |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   307 | SE           |      4 |
+|   98765 | Bourikas | Elec. Eng. |   98 |    NULL |  NULL | NULL         |   NULL |
+|   98988 | Tanaka   | Biology    |  120 |   98988 |   505 | AI           |      4 |
++---------+----------+------------+------+---------+-------+--------------+--------+
+15 rows in set (0.00 sec)
+
+mysql> select * from student right join subject on student.rollnum = subject.rollnum;
++---------+--------+------------+------+---------+-------+--------------+--------+
+| rollnum | name   | address    | age  | rollnum | subId | Subject_name | credit |
++---------+--------+------------+------+---------+-------+--------------+--------+
+|     128 | Zhang  | Comp. Sci. |  102 |     128 |   205 | DSA          |      4 |
+|   19991 | Brandt | History    |   80 |   19991 |   208 | DS           |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   76653 |   211 | c++          |      4 |
+|   76653 | Aoi    | Elec. Eng. |   60 |   76653 |   307 | SE           |      4 |
+|     128 | Zhang  | Comp. Sci. |  102 |     128 |   315 | DBMS         |      4 |
+|   98988 | Tanaka | Biology    |  120 |   98988 |   505 | AI           |      4 |
++---------+--------+------------+------+---------+-------+--------------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from student left join subject on student.rollnum = subject.rollnum
+    -> union all
+    -> select * from student right join subject on student.rollnum = subject.rollnum;
++---------+----------+------------+------+---------+-------+--------------+--------+
+| rollnum | name     | address    | age  | rollnum | subId | Subject_name | credit |
++---------+----------+------------+------+---------+-------+--------------+--------+
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   205 | DSA          |      4 |
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   315 | DBMS         |      4 |
+|   12345 | Shankar  | Comp. Sci. |   32 |    NULL |  NULL | NULL         |   NULL |
+|   19991 | Brandt   | History    |   80 |   19991 |   208 | DS           |      4 |
+|   23121 | Chavez   | Finance    |  110 |    NULL |  NULL | NULL         |   NULL |
+|   44553 | Peltier  | Physics    |   56 |    NULL |  NULL | NULL         |   NULL |
+|   45678 | Levy     | Physics    |   46 |    NULL |  NULL | NULL         |   NULL |
+|   54321 | Williams | Comp. Sci. |   54 |    NULL |  NULL | NULL         |   NULL |
+|   55739 | Sanchez  | Music      |   38 |    NULL |  NULL | NULL         |   NULL |
+|   70557 | Snow     | Physics    |    0 |    NULL |  NULL | NULL         |   NULL |
+|   76543 | Brown    | Comp. Sci. |   58 |    NULL |  NULL | NULL         |   NULL |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   211 | c++          |      4 |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   307 | SE           |      4 |
+|   98765 | Bourikas | Elec. Eng. |   98 |    NULL |  NULL | NULL         |   NULL |
+|   98988 | Tanaka   | Biology    |  120 |   98988 |   505 | AI           |      4 |
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   205 | DSA          |      4 |
+|   19991 | Brandt   | History    |   80 |   19991 |   208 | DS           |      4 |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   211 | c++          |      4 |
+|   76653 | Aoi      | Elec. Eng. |   60 |   76653 |   307 | SE           |      4 |
+|     128 | Zhang    | Comp. Sci. |  102 |     128 |   315 | DBMS         |      4 |
+|   98988 | Tanaka   | Biology    |  120 |   98988 |   505 | AI           |      4 |
++---------+----------+------------+------+---------+-------+--------------+--------+

@@ -1,0 +1,203 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table department
+    ->  (dept_name              varchar(20),
+    ->   building               varchar(15),
+    ->   budget                 numeric(12,2) check (budget > 0),
+    ->   primary key (dept_name)
+    ->  );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| department        |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> create table course
+    ->  (course_id              varchar(8),
+    ->   title                  varchar(50),
+    ->   dept_name              varchar(20),
+    ->   credits                numeric(2,0) check (credits > 0),
+    ->   primary key (course_id),
+    ->   foreign key (dept_name) references department (dept_name)
+    ->          on delete set null
+    ->  );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> drop table course;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table course
+    ->  (course_id              varchar(8),
+    ->   title                  varchar(50),
+    ->   dept_name              varchar(20),
+    ->   credits                numeric(2,0) check (credits > 0),
+    ->   primary key (course_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  |     | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table course add constraint fk_course foreign key (dept_name) references department (dept_name);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table course drop foreign key fk_course;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table course add constraint fk_course foreign key (dept_name) references department (dept_name);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table course add constraint uq_title unique (title);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  | UNI | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table course drop index uq_title;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)

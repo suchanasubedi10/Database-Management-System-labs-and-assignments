@@ -1,0 +1,93 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from department;
+Empty set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into classroom values ('Packard', '101', '500');
+ERROR 1146 (42S02): Table 'college.classroom' doesn't exist
+mysql> insert into classroom values ('Painter', '514', '10');
+ERROR 1146 (42S02): Table 'college.classroom' doesn't exist
+mysql> insert into classroom values ('Taylor', '3128', '70');
+ERROR 1146 (42S02): Table 'college.classroom' doesn't exist
+mysql> insert into classroom values ('Watson', '100', '30');
+ERROR 1146 (42S02): Table 'college.classroom' doesn't exist
+mysql> nsert into department values ('Biology', 'Watson', '90000');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'nsert into department values ('Biology', 'Watson', '90000')' at line 1
+mysql> insert into department values ('Comp. Sci.', 'Taylor', '100000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department values ('Elec. Eng.', 'Taylor', '85000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department values ('Finance', 'Painter', '120000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from department;
++------------+----------+-----------+
+| dept_name  | building | budget    |
++------------+----------+-----------+
+| Comp. Sci. | Taylor   | 100000.00 |
+| Elec. Eng. | Taylor   |  85000.00 |
+| Finance    | Painter  | 120000.00 |
++------------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into course values ('BIO-101', 'Intro. to Biology', 'Biology', '4');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`course`, CONSTRAINT `fk_course` FOREIGN KEY (`dept_name`) REFERENCES `department` (`dept_name`))
+mysql> insert into course values ('BIO-301', 'Genetics', 'Biology', '4');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`course`, CONSTRAINT `fk_course` FOREIGN KEY (`dept_name`) REFERENCES `department` (`dept_name`))
+mysql> insert into course values ('BIO-399', 'Computational Biology', 'Biology', '3');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`course`, CONSTRAINT `fk_course` FOREIGN KEY (`dept_name`) REFERENCES `department` (`dept_name`))
+mysql> insert into course values ('CS-101', 'Intro. to Computer Science', 'Comp. Sci.', '4');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into course values ('CS-190', 'Game Design', 'Comp. Sci.', '4');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into course values ('CS-315', 'Robotics', 'Comp. Sci.', '3');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from course;
++-----------+----------------------------+------------+---------+
+| course_id | title                      | dept_name  | credits |
++-----------+----------------------------+------------+---------+
+| CS-101    | Intro. to Computer Science | Comp. Sci. |       4 |
+| CS-190    | Game Design                | Comp. Sci. |       4 |
+| CS-315    | Robotics                   | Comp. Sci. |       3 |
++-----------+----------------------------+------------+---------+
+3 rows in set (0.00 sec

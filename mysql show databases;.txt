@@ -1,0 +1,617 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.06 sec)
+
+mysql> create database college;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> create database student;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql> create database classroom;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use classroom;
+Database changed
+mysql> create table classroom
+    ->  (building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   capacity               numeric(4,0),
+    ->   primary key (building, room_number)
+    ->   primary key (building, room_number)
+    ->
+    -> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primary key (building, room_number)
+
+show tables' at line 6
+mysql> create table classroom
+    ->  (building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   capacity               numeric(4,0),
+    ->   primary key (building, room_number)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_classroom |
++---------------------+
+| classroom           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> create database tablesection;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create database time_slot;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use tablesection;
+Database changed
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),
+    ->   foreign key (course_id) references course (course_id)
+    ->          on delete cascade,
+    ->   foreign key (building, room_number) references classroom (building, room_number)
+    ->          on delete set null
+    ->  );
+ERROR 1824 (HY000): Failed to open the referenced table 'course'
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> use time_slot;
+Database changed
+mysql> create table time_slot
+    ->  (time_slot_id           varchar(4),
+    ->   day                    varchar(1),
+    ->   start_hr               numeric(2) check (start_hr >= 0 and start_hr < 24),
+    ->   start_min              numeric(2) check (start_min >= 0 and start_min < 60),
+    ->   end_hr                 numeric(2) check (end_hr >= 0 and end_hr < 24),
+    ->   end_min                numeric(2) check (end_min >= 0 and end_min < 60),
+    ->   primary key (time_slot_id, day, start_hr, start_min)
+    ->  );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| time_slot           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> use tablesection;
+Database changed
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),
+    ->   foreign key (course_id) references course (course_id)
+    ->          on delete cascade,
+    ->   foreign key (building, room_number) references classroom (building, room_number)
+    ->          on delete set null
+    ->  );
+ERROR 1824 (HY000): Failed to open the referenced table 'course'
+mysql> use time_slot;
+Database changed
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(4)   | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | decimal(2,0) | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | decimal(2,0) | YES  |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> alter table time_slot add second decimal(3,0);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(4)   | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | decimal(2,0) | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | decimal(2,0) | YES  |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
+| second       | decimal(3,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> alter table time_slot drop column second;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| time_slot           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(4)   | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | decimal(2,0) | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | decimal(2,0) | YES  |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot alter column start_hr int(2,0);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int(2,0)' at line 1
+mysql> alter table time_slot alter column start_hr int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int' at line 1
+mysql> alter table time_slot modify column start_hr int;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(4)   | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | decimal(2,0) | YES  |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot modify column time_slot_id varchar(40);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | decimal(2,0) | YES  |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot modify column end_hr int NOT NULL;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   | PRI | NULL    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot alter column time_slot_id set default 5000;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   | PRI | 5000    |       |
+| day          | varchar(1)   | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   | PRI | NULL    |       |
+| start_min    | decimal(2,0) | NO   | PRI | NULL    |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot alter column day set default 50;
+ERROR 1067 (42000): Invalid default value for 'day'
+mysql> alter table time_slot alter column day set default 1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table time_slot alter column start_hr set default 24;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table time_slot alter column start_min set default 60;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   | PRI | 5000    |       |
+| day          | varchar(1)   | NO   | PRI | 1       |       |
+| start_hr     | int          | NO   | PRI | 24      |       |
+| start_min    | decimal(2,0) | NO   | PRI | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot add constraints sunday check(day);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sunday check(day)' at line 1
+mysql> alter table time_slot add constraints const1 check(day);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'const1 check(day)' at line 1
+mysql> alter table time_slot add constraints const1 check(day in ("sun","mon","tue"));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'const1 check(day in ("sun","mon","tue"))' at line 1
+mysql> alter table time_slot add constraint const1 check(day in ("sun","mon","tue"));
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into time_slot values ("mor","sun","20","10");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into time_slot values ("100","sun","20","10");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into time_slot values ("2","sun","20","10");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into time_slot values ("2","sun","20","10","2","6");
+ERROR 1406 (22001): Data too long for column 'day' at row 1
+mysql> insert into time_slot values ("2","s","20","10","2","6");
+ERROR 3819 (HY000): Check constraint 'const1' is violated.
+mysql> alter table time_slot modify column day varchar(50);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into time_slot values ("2","sun","20","10","2","6");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select  * from time_slot;
++--------------+-----+----------+-----------+--------+---------+
+| time_slot_id | day | start_hr | start_min | end_hr | end_min |
++--------------+-----+----------+-----------+--------+---------+
+| 2            | sun |       20 |        10 |      2 |       6 |
++--------------+-----+----------+-----------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into time_slot values ("2","mon","20","10","2","6");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from time_slot;
++--------------+-----+----------+-----------+--------+---------+
+| time_slot_id | day | start_hr | start_min | end_hr | end_min |
++--------------+-----+----------+-----------+--------+---------+
+| 2            | mon |       20 |        10 |      2 |       6 |
+| 2            | sun |       20 |        10 |      2 |       6 |
++--------------+-----+----------+-----------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> insert into time_slot values ("3","tue","21","11","3","7");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from time_slot;
++--------------+-----+----------+-----------+--------+---------+
+| time_slot_id | day | start_hr | start_min | end_hr | end_min |
++--------------+-----+----------+-----------+--------+---------+
+| 2            | mon |       20 |        10 |      2 |       6 |
+| 2            | sun |       20 |        10 |      2 |       6 |
+| 3            | tue |       21 |        11 |      3 |       7 |
++--------------+-----+----------+-----------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> alter table time_slot drop constraint;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> alter table time_slot drop constraint const1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into time_slot values ("3","wed","21","11","3","7");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select  * from time_slot;
++--------------+-----+----------+-----------+--------+---------+
+| time_slot_id | day | start_hr | start_min | end_hr | end_min |
++--------------+-----+----------+-----------+--------+---------+
+| 2            | mon |       20 |        10 |      2 |       6 |
+| 2            | sun |       20 |        10 |      2 |       6 |
+| 3            | tue |       21 |        11 |      3 |       7 |
+| 3            | wed |       21 |        11 |      3 |       7 |
++--------------+-----+----------+-----------+--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   | PRI | 5000    |       |
+| day          | varchar(50)  | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   | PRI | 24      |       |
+| start_min    | decimal(2,0) | NO   | PRI | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table tims_slot drop primary key;
+ERROR 1146 (42S02): Table 'time_slot.tims_slot' doesn't exist
+mysql> alter table time_slot drop primary key;
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   |     | 5000    |       |
+| day          | varchar(50)  | NO   |     | NULL    |       |
+| start_hr     | int          | NO   |     | 24      |       |
+| start_min    | decimal(2,0) | NO   |     | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot add constraint const2 primary key (end_min);
+ERROR 1062 (23000): Duplicate entry '6' for key 'time_slot.PRIMARY'
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   |     | 5000    |       |
+| day          | varchar(50)  | NO   |     | NULL    |       |
+| start_hr     | int          | NO   |     | 24      |       |
+| start_min    | decimal(2,0) | NO   |     | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table time_slot add constraint const2 primary key (day);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   |     | 5000    |       |
+| day          | varchar(50)  | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   |     | 24      |       |
+| start_min    | decimal(2,0) | NO   |     | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> use classroom;
+Database changed
+mysql> show columns from classroom;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| building    | varchar(15)  | NO   | PRI | NULL    |       |
+| room_number | varchar(7)   | NO   | PRI | NULL    |       |
+| capacity    | decimal(4,0) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_classroom |
++---------------------+
+| classroom           |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> use Tables_in_classroom;
+ERROR 1049 (42000): Unknown database 'tables_in_classroom'
+mysql> use time_slot;
+Database changed
+mysql> show columns from time_slot;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| time_slot_id | varchar(40)  | NO   |     | 5000    |       |
+| day          | varchar(50)  | NO   | PRI | NULL    |       |
+| start_hr     | int          | NO   |     | 24      |       |
+| start_min    | decimal(2,0) | NO   |     | 60      |       |
+| end_hr       | int          | NO   |     | NULL    |       |
+| end_min      | decimal(2,0) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table department
+    ->  (dept_name              varchar(20),
+    ->   building               varchar(15),
+    ->   budget                 numeric(12,2) check (budget > 0),
+    ->   primary key (dept_name)
+    ->  );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| department          |
+| time_slot           |
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> use time_slot;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| department          |
+| time_slot           |
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table course
+    ->  (course_id              varchar(8),
+    ->   title                  varchar(50),
+    ->   dept_name              varchar(20),
+    ->   credits                numeric(2,0) check (credits > 0),
+    ->   primary key (course_id),
+    ->   foreign key (dept_name) references department (dept_name)
+    ->          on delete set null
+    ->  );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| course              |
+| department          |
+| time_slot           |
++---------------------+
+3 rows in set (0.00 sec)
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table course drop foreign key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> drop table course;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| department          |
+| time_slot           |
++---------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table course
+    ->  (course_id              varchar(8),
+    ->   title                  varchar(50),
+    ->   dept_name              varchar(20),
+    ->   credits                numeric(2,0) check (credits > 0),
+    ->   primary key (course_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_time_slot |
++---------------------+
+| course              |
+| department          |
+| time_slot           |
++---------------------+
+3 rows in set (0.00 sec)

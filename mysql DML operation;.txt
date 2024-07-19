@@ -1,0 +1,719 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| classroom          |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
+| tablesection       |
+| time_slot          |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use college;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> use college
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table instructor
+    ->  (ID                     varchar(5),
+    ->   name                   varchar(20) not null,
+    ->   dept_name              varchar(20),
+    ->   salary                 numeric(8,2) check (salary > 29000),
+    ->   primary key (ID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
++-------------------+
+3 rows in set (0.00 sec)
+
+mysql> show columns from instructor;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| name      | varchar(20)  | NO   |     | NULL    |       |
+| dept_name | varchar(20)  | YES  |     | NULL    |       |
+| salary    | decimal(8,2) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into instructor values ('10101', 'Srinivasan', 'Comp. Sci.', '65000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values ('12121', 'Wu', 'Finance', '90000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values ('15151', 'Mozart', 'Music', '40000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values ('22222', 'Einstein', 'Physics', '95000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into instructor values ('32343', 'El Said', 'History', '60000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show columns from instructor;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| name      | varchar(20)  | NO   |     | NULL    |       |
+| dept_name | varchar(20)  | YES  |     | NULL    |       |
+| salary    | decimal(8,2) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
++-------------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into department values ('Biology', 'Watson', '90000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into department values ('Comp. Sci.', 'Taylor', '100000');
+ERROR 1062 (23000): Duplicate entry 'Comp. Sci.' for key 'department.PRIMARY'
+mysql> insert into department values ('Elec. Eng.', 'Taylor', '85000');
+ERROR 1062 (23000): Duplicate entry 'Elec. Eng.' for key 'department.PRIMARY'
+mysql> insert into department values ('Finance', 'Painter', '120000');
+ERROR 1062 (23000): Duplicate entry 'Finance' for key 'department.PRIMARY'
+mysql> insert into department values ('History', 'Painter', '50000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from department;
++------------+----------+-----------+
+| dept_name  | building | budget    |
++------------+----------+-----------+
+| Biology    | Watson   |  90000.00 |
+| Comp. Sci. | Taylor   | 100000.00 |
+| Elec. Eng. | Taylor   |  85000.00 |
+| Finance    | Painter  | 120000.00 |
+| History    | Painter  |  50000.00 |
++------------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into instructor values ('10101', 'Srinivasan', 'Comp. Sci.', '65000');
+ERROR 1062 (23000): Duplicate entry '10101' for key 'instructor.PRIMARY'
+mysql> insert into instructor values ('12121', 'Wu', 'Finance', '90000');
+ERROR 1062 (23000): Duplicate entry '12121' for key 'instructor.PRIMARY'
+mysql> insert into instructor values ('15151', 'Mozart', 'Music', '40000');
+ERROR 1062 (23000): Duplicate entry '15151' for key 'instructor.PRIMARY'
+mysql> insert into instructor values ('22222', 'Einstein', 'Physics', '95000');
+ERROR 1062 (23000): Duplicate entry '22222' for key 'instructor.PRIMARY'
+mysql> insert into instructor values ('32343', 'El Said', 'History', '60000');
+ERROR 1062 (23000): Duplicate entry '32343' for key 'instructor.PRIMARY'
+mysql> insert into instructor values ('33456', 'Gold', 'Physics', '87000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from instructor;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
++-------+------------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select name from instructor;
++------------+
+| name       |
++------------+
+| Srinivasan |
+| Wu         |
+| Mozart     |
+| Einstein   |
+| El Said    |
+| Gold       |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> select dept_name from instructor;
++------------+
+| dept_name  |
++------------+
+| Comp. Sci. |
+| Finance    |
+| Music      |
+| Physics    |
+| History    |
+| Physics    |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct dept_name from instructor;
++------------+
+| dept_name  |
++------------+
+| Comp. Sci. |
+| Finance    |
+| Music      |
+| Physics    |
+| History    |
++------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from instructor;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
++-------+------------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from instructor limit 2;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
++-------+------------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select name from instructor where dept_name = "music" and salary>10000;
++--------+
+| name   |
++--------+
+| Mozart |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select name from instructor where dept_name = "physics" and salary>10000;
++----------+
+| name     |
++----------+
+| Einstein |
+| Gold     |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select name,instructor.dept_name,building from department, instructor where department.dept_name=instructor.dept_name;
++------------+------------+----------+
+| name       | dept_name  | building |
++------------+------------+----------+
+| Srinivasan | Comp. Sci. | Taylor   |
+| Wu         | Finance    | Painter  |
+| El Said    | History    | Painter  |
++------------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select ID,name from course,instructor where course.dept_name=instructor.dept_name;
++-------+------------+
+| ID    | name       |
++-------+------------+
+| 10101 | Srinivasan |
+| 10101 | Srinivasan |
+| 10101 | Srinivasan |
++-------+------------+
+3 rows in set (0.00 sec)
+
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),
+    ->   foreign key (course_id) references course (course_id)
+    ->          on delete cascade,
+    ->   foreign key (building, room_number) references classroom (building, room_number)
+    ->          on delete set null
+    ->  );
+ERROR 1824 (HY000): Failed to open the referenced table 'classroom'
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),constraints fk_sec1 foreign key (course_id) references course (course_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fk_sec1 foreign key (course_id) references course (course_id))' at line 10
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   time_slot_id           varchar(4),
+    -> primary key (course_id, sec_id, semester, year),constraint fk_sec1 foreign key (course_id) references course (course_id));
+ERROR 1060 (42S21): Duplicate column name 'time_slot_id'
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),
+    -> constraint fk_sec1 foreign key (course_id) references course (course_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
++-------------------+
+4 rows in set (0.00 sec)
+
+mysql> create table teaches
+    ->  (ID                     varchar(5),
+    ->   course_id              varchar(8),
+    ->   sec_id                 varchar(8),
+    ->   semester               varchar(6),
+    ->   year                   numeric(4,0),
+    ->   primary key (ID, course_id, sec_id, semester, year),
+    ->   foreign key (course_id, sec_id, semester, year) references section (course_id, sec_id, semester, year)
+    ->          on delete cascade,
+    ->   foreign key (ID) references instructor (ID)
+    ->          on delete cascade
+    ->
+    ->
+    -> show tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'show tables' at line 14
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
++-------------------+
+4 rows in set (0.00 sec)
+
+mysql> (ID                      varchar(5),
+    ->   course_id              varchar(8),
+    ->   sec_id                 varchar(8),
+    ->   semester               varchar(6),
+    ->   year                   numeric(4,0),
+    ->   primary key (ID, course_id, sec_id, semester, year),constraint fk_sec2 foreign key (course_id,sec_id, semester, year) references section (course_id, sec_id, semester, year),constraint fk_ins1 foreign key(Id) references instructor(Id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ID                       varchar(5),
+         course_id              varchar(8),
+         sec_id                 varchar(8),
+         semester               v' at line 1
+mysql> create table teaches
+    ->  (ID                     varchar(5),
+    ->   course_id              varchar(8),
+    ->   sec_id                 varchar(8),
+    ->   semester               varchar(6),
+    ->   year                   numeric(4,0),
+    ->   primary key (ID, course_id, sec_id, semester, year),constraint fk_sec2 foreign key (course_id,sec_id, semester, year) references section (course_id, sec_id, semester, year),constraint fk_ins1 foreign key(Id) references instructor(Id));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show columns from teaches;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| semester  | varchar(6)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | NO   | PRI | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show columns from sections;
+ERROR 1146 (42S02): Table 'college.sections' doesn't exist
+mysql> show columns from section;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| course_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id       | varchar(8)   | NO   | PRI | NULL    |       |
+| semester     | varchar(6)   | NO   | PRI | NULL    |       |
+| year         | decimal(4,0) | NO   | PRI | NULL    |       |
+| building     | varchar(15)  | YES  |     | NULL    |       |
+| room_number  | varchar(7)   | YES  |     | NULL    |       |
+| time_slot_id | varchar(4)   | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select distinctom I1.name from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.dept_name="computer";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.name from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.d' at line 1
+mysql> select distinct I1.name from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.dept_name="computer";
+Empty set (0.00 sec)
+
+mysql> select name,instructor.dept_name as Department_Name,building from instructor, department where instructor.dept_name=department.dept_name;
++------------+-----------------+----------+
+| name       | Department_Name | building |
++------------+-----------------+----------+
+| Srinivasan | Comp. Sci.      | Taylor   |
+| Wu         | Finance         | Painter  |
+| El Said    | History         | Painter  |
++------------+-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name, I.dept_name as Department_Name,building from instructor as I ,department where instructor.dept_name=department.dept_name;
+ERROR 1054 (42S22): Unknown column 'instructor.dept_name' in 'where clause'
+mysql> select name, I.dept_name as Department_Name,building from instructor as I ,department as D where I.dept_name=D.dept_name;
++------------+-----------------+----------+
+| name       | Department_Name | building |
++------------+-----------------+----------+
+| Srinivasan | Comp. Sci.      | Taylor   |
+| Wu         | Finance         | Painter  |
+| El Said    | History         | Painter  |
++------------+-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select distinct I1.name from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.dept_name="Comp. Sci.";
++------------+
+| name       |
++------------+
+| Srinivasan |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select distinct I1.name,I1.salary from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.dept_name="Comp. Sci.";
++------------+----------+
+| name       | salary   |
++------------+----------+
+| Srinivasan | 65000.00 |
++------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from instructor;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
++-------+------------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct I1.name,I1.salary from Instructor as I1, Instructor as I2 where I1.salary>I2.salary and I1.dept_name="History";
++---------+----------+
+| name    | salary   |
++---------+----------+
+| El Said | 60000.00 |
++---------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into section values ('BIO-101', '1', 'Summer', '2017', 'Painter', '514', 'B');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('BIO-301', '1', 'Summer', '2018', 'Painter', '514', 'A');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('CS-101', '1', 'Fall', '2017', 'Packard', '101', 'H');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into section values ('CS-101', '1', 'Spring', '2018', 'Packard', '101', 'F');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into section values ('CS-190', '1', 'Spring', '2017', 'Taylor', '3128', 'E');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into section values ('CS-190', '2', 'Spring', '2017', 'Taylor', '3128', 'A');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into section values ('CS-315', '1', 'Spring', '2018', 'Watson', '120', 'D');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into section values ('CS-319', '1', 'Spring', '2018', 'Watson', '100', 'B');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('CS-319', '2', 'Spring', '2018', 'Taylor', '3128', 'C');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('CS-347', '1', 'Fall', '2017', 'Taylor', '3128', 'A');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('EE-181', '1', 'Spring', '2017', 'Taylor', '3128', 'C');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('FIN-201', '1', 'Spring', '2018', 'Packard', '101', 'B');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('HIS-351', '1', 'Spring', '2018', 'Painter', '514', 'C');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('MU-199', '1', 'Spring', '2018', 'Packard', '101', 'D');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> insert into section values ('PHY-101', '1', 'Fall', '2017', 'Watson', '100', 'A');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`section`, CONSTRAINT `fk_sec1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`))
+mysql> select * from section;
++-----------+--------+----------+------+----------+-------------+--------------+
+| course_id | sec_id | semester | year | building | room_number | time_slot_id |
++-----------+--------+----------+------+----------+-------------+--------------+
+| CS-101    | 1      | Fall     | 2017 | Packard  | 101         | H            |
+| CS-101    | 1      | Spring   | 2018 | Packard  | 101         | F            |
+| CS-190    | 1      | Spring   | 2017 | Taylor   | 3128        | E            |
+| CS-190    | 2      | Spring   | 2017 | Taylor   | 3128        | A            |
+| CS-315    | 1      | Spring   | 2018 | Watson   | 120         | D            |
++-----------+--------+----------+------+----------+-------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into teaches values ('10101', 'CS-315', '1', 'Spring', '2018');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into teaches values ('10101', 'CS-347', '1', 'Fall', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_sec2` FOREIGN KEY (`course_id`, `sec_id`, `semester`, `year`) REFERENCES `section` (`course_id`, `sec_id`, `semester`, `year`))
+mysql> insert into teaches values ('12121', 'FIN-201', '1', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_sec2` FOREIGN KEY (`course_id`, `sec_id`, `semester`, `year`) REFERENCES `section` (`course_id`, `sec_id`, `semester`, `year`))
+mysql> insert into teaches values ('15151', 'MU-199', '1', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_sec2` FOREIGN KEY (`course_id`, `sec_id`, `semester`, `year`) REFERENCES `section` (`course_id`, `sec_id`, `semester`, `year`))
+mysql> insert into teaches values ('22222', 'PHY-101', '1', 'Fall', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_sec2` FOREIGN KEY (`course_id`, `sec_id`, `semester`, `year`) REFERENCES `section` (`course_id`, `sec_id`, `semester`, `year`))
+mysql> insert into teaches values ('32343', 'HIS-351', '1', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_sec2` FOREIGN KEY (`course_id`, `sec_id`, `semester`, `year`) REFERENCES `section` (`course_id`, `sec_id`, `semester`, `year`))
+mysql> insert into teaches values ('45565', 'CS-101', '1', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('45565', 'CS-319', '1', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('76766', 'BIO-101', '1', 'Summer', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('76766', 'BIO-301', '1', 'Summer', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('83821', 'CS-190', '1', 'Spring', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('83821', 'CS-190', '2', 'Spring', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('83821', 'CS-319', '2', 'Spring', '2018');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> insert into teaches values ('98345', 'EE-181', '1', 'Spring', '2017');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`college`.`teaches`, CONSTRAINT `fk_ins1` FOREIGN KEY (`ID`) REFERENCES `instructor` (`ID`))
+mysql> select * from teaches;
++-------+-----------+--------+----------+------+
+| ID    | course_id | sec_id | semester | year |
++-------+-----------+--------+----------+------+
+| 10101 | CS-315    | 1      | Spring   | 2018 |
++-------+-----------+--------+----------+------+
+1 row in set (0.00 sec)
+
+mysql> insert into teaches values ('10101', 'CS-101', '1', 'Fall', '2017');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from teaches;
++-------+-----------+--------+----------+------+
+| ID    | course_id | sec_id | semester | year |
++-------+-----------+--------+----------+------+
+| 10101 | CS-101    | 1      | Fall     | 2017 |
+| 10101 | CS-315    | 1      | Spring   | 2018 |
++-------+-----------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from instructor;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| name      | varchar(20)  | NO   |     | NULL    |       |
+| dept_name | varchar(20)  | YES  |     | NULL    |       |
+| salary    | decimal(8,2) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select name, course_id from instructor,teaches where instructor.ID=teaches.ID and dept_name="Comp. Sci.";
++------------+-----------+
+| name       | course_id |
++------------+-----------+
+| Srinivasan | CS-101    |
+| Srinivasan | CS-315    |
++------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select name,course_id,title from instructor,teaches where instructor.ID=teaches.ID and course.course_ID=teaches.course_Id and dept_name = "Comp. Sci.
+";
+ERROR 1054 (42S22): Unknown column 'title' in 'field list'
+mysql> select name,title from instructor,teaches where instructor.ID=teaches.ID and course.course_ID=teaches.course_Id and dept_name = "Comp. Sci.";
+ERROR 1054 (42S22): Unknown column 'title' in 'field list'
+mysql> show tables;
++-------------------+
+| Tables_in_college |
++-------------------+
+| course            |
+| department        |
+| instructor        |
+| section           |
+| teaches           |
++-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,title from instructor,teaches,course where instructor.ID=teaches.ID and course.course_ID=teaches.course_Id and dept_name = "Comp. Sci.";
+ERROR 1052 (23000): Column 'dept_name' in where clause is ambiguous
+mysql> select name,title from instructor,teaches,course where instructor.ID=teaches.ID and course.course_ID=teaches.course_Id and instructor.dept_name = "Comp. Sci.";
++------------+----------------------------+
+| name       | title                      |
++------------+----------------------------+
+| Srinivasan | Intro. to Computer Science |
+| Srinivasan | Robotics                   |
++------------+----------------------------+
+2 rows in set (0.00 sec)
+
+mysql> select dept_name from department where building like="%I%";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '="%I%"' at line 1
+mysql> select dept_name from department where building like'%I%';
++-----------+
+| dept_name |
++-----------+
+| Finance   |
+| History   |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select dept_name from instructor where name like'%B%';
+Empty set (0.00 sec)
+
+mysql> select dept_name from instructor where name like'%S%';
++------------+
+| dept_name  |
++------------+
+| Comp. Sci. |
+| Physics    |
+| History    |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select name from instructor where name like'%S%';
++------------+
+| name       |
++------------+
+| Srinivasan |
+| Einstein   |
+| El Said    |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select dept_name from instructor where name like'_____%';
++------------+
+| dept_name  |
++------------+
+| Comp. Sci. |
+| Music      |
+| Physics    |
+| History    |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> select name from instructor where dept_name= "Physics";
++----------+
+| name     |
++----------+
+| Einstein |
+| Gold     |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select name from instructor where dept_name= "Physics";
++----------+
+| name     |
++----------+
+| Einstein |
+| Gold     |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select name from instructor where dept_name= "Physics" order by name;
++----------+
+| name     |
++----------+
+| Einstein |
+| Gold     |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select name from instructor where dept_name= "History";
++---------+
+| name    |
++---------+
+| El Said |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select name from instructor where dept_name= "Physics" order by name desc;
++----------+
+| name     |
++----------+
+| Gold     |
+| Einstein |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from instructor order by salary desc;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
++-------+------------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from instructor order by salary desc,name asc;
++-------+------------+------------+----------+
+| ID    | name       | dept_name  | salary   |
++-------+------------+------------+----------+
+| 22222 | Einstein   | Physics    | 95000.00 |
+| 12121 | Wu         | Finance    | 90000.00 |
+| 33456 | Gold       | Physics    | 87000.00 |
+| 10101 | Srinivasan | Comp. Sci. | 65000.00 |
+| 32343 | El Said    | History    | 60000.00 |
+| 15151 | Mozart     | Music      | 40000.00 |
++-------+------------+------------+----------+

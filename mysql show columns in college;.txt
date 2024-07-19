@@ -1,0 +1,377 @@
+mysql> show columns in college;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | YES  |     | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table college add name varchar(12);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | YES  |     | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | YES  |     | NULL    |       |
+| name      | varchar(12)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table college add roll
+    -> numeric(30);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| course_id | varchar(8)    | YES  |     | NULL    |       |
+| sec_id    | varchar(8)    | NO   | PRI | NULL    |       |
+| year      | decimal(4,0)  | YES  |     | NULL    |       |
+| name      | varchar(12)   | YES  |     | NULL    |       |
+| roll      | decimal(30,0) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table college add sriyanka varchar(8);
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| course_id | varchar(8)    | YES  |     | NULL    |       |
+| sec_id    | varchar(8)    | NO   | PRI | NULL    |       |
+| year      | decimal(4,0)  | YES  |     | NULL    |       |
+| name      | varchar(12)   | YES  |     | NULL    |       |
+| roll      | decimal(30,0) | YES  |     | NULL    |       |
+| sriyanka  | varchar(8)    | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table drop column sriyanka;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'drop column sriyanka' at line 1
+mysql> alter table college drop column sriyanka;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| course_id | varchar(8)    | YES  |     | NULL    |       |
+| sec_id    | varchar(8)    | NO   | PRI | NULL    |       |
+| year      | decimal(4,0)  | YES  |     | NULL    |       |
+| name      | varchar(12)   | YES  |     | NULL    |       |
+| roll      | decimal(30,0) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table college modify column roll int;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | YES  |     | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | YES  |     | NULL    |       |
+| name      | varchar(12)  | YES  |     | NULL    |       |
+| roll      | int          | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table college modify column year int;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| course_id | varchar(8)  | YES  |     | NULL    |       |
+| sec_id    | varchar(8)  | NO   | PRI | NULL    |       |
+| year      | int         | YES  |     | NULL    |       |
+| name      | varchar(12) | YES  |     | NULL    |       |
+| roll      | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table college modify column roll int NOT NULL;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college
+    -> ;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| course_id | varchar(8)  | YES  |     | NULL    |       |
+| sec_id    | varchar(8)  | NO   | PRI | NULL    |       |
+| year      | int         | YES  |     | NULL    |       |
+| name      | varchar(12) | YES  |     | NULL    |       |
+| roll      | int         | NO   |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table college roll set default 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'roll set default 1' at line 1
+mysql> alter table college alter roll set default 1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from college;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| course_id | varchar(8)  | YES  |     | NULL    |       |
+| sec_id    | varchar(8)  | NO   | PRI | NULL    |       |
+| year      | int         | YES  |     | NULL    |       |
+| name      | varchar(12) | YES  |     | NULL    |       |
+| roll      | int         | NO   |     | 1       |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table classroom
+    -> (building
+    -> varchar(15),
+    -> room_number varchar(7),
+    -> capacity numeric(4,0),
+    -> primary key (building,room_number));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++------------------------------------------------------+
+| Tables_in_mysql                                      |
++------------------------------------------------------+
+| classroom                                            |
+| college                                              |
+| columns_priv                                         |
+| component                                            |
+| db                                                   |
+| default_roles                                        |
+| engine_cost                                          |
+| func                                                 |
+| general_log                                          |
+| global_grants                                        |
+| gtid_executed                                        |
+| help_category                                        |
+| help_keyword                                         |
+| help_relation                                        |
+| help_topic                                           |
+| innodb_index_stats                                   |
+| innodb_table_stats                                   |
+| ndb_binlog_index                                     |
+| password_history                                     |
+| plugin                                               |
+| procs_priv                                           |
+| proxies_priv                                         |
+| replication_asynchronous_connection_failover         |
+| replication_asynchronous_connection_failover_managed |
+| replication_group_configuration_version              |
+| replication_group_member_actions                     |
+| role_edges                                           |
+| server_cost                                          |
+| servers                                              |
+| slave_master_info                                    |
+| slave_relay_log_info                                 |
+| slave_worker_info                                    |
+| slow_log                                             |
+| tables_priv                                          |
+| time_zone                                            |
+| time_zone_leap_second                                |
+| time_zone_name                                       |
+| time_zone_transition                                 |
+| time_zone_transition_type                            |
+| user                                                 |
++------------------------------------------------------+
+40 rows in set (0.00 sec)
+
+mysql> show columns from classroom;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| building    | varchar(15)  | NO   | PRI | NULL    |       |
+| room_number | varchar(7)   | NO   | PRI | NULL    |       |
+| capacity    | decimal(4,0) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table department
+    ->  (dept_name              varchar(20),
+    ->   building               varchar(15),
+    ->   budget                 numeric(12,2) check (budget > 0),
+    ->   primary key (dept_name)
+    ->  );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show columns from classroom;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| building    | varchar(15)  | NO   | PRI | NULL    |       |
+| room_number | varchar(7)   | NO   | PRI | NULL    |       |
+| capacity    | decimal(4,0) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show columns from department;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| dept_name | varchar(20)   | NO   | PRI | NULL    |       |
+| building  | varchar(15)   | YES  |     | NULL    |       |
+| budget    | decimal(12,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table course
+    ->  (course_id              varchar(8),
+    ->   title                  varchar(50),
+    ->   dept_name              varchar(20),
+    ->   credits                numeric(2,0) check (credits > 0),
+    ->   primary key (course_id),
+    ->   foreign key (dept_name) references department (dept_name)
+    ->          on delete set null
+    ->  );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show columns from course;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| title     | varchar(50)  | YES  |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| credits   | decimal(2,0) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table instructor
+    ->  (ID                     varchar(5),
+    ->   name                   varchar(20) not null,
+    ->   dept_name              varchar(20),
+    ->   salary                 numeric(8,2) check (salary > 29000),
+    ->   primary key (ID),
+    ->   foreign key (dept_name) references department (dept_name)
+    ->          on delete set null
+    ->  );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show columns from instructor;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| name      | varchar(20)  | NO   |     | NULL    |       |
+| dept_name | varchar(20)  | YES  | MUL | NULL    |       |
+| salary    | decimal(8,2) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table section
+    ->  (course_id              varchar(8),
+    ->          sec_id                  varchar(8),
+    ->   semester               varchar(6)
+    ->          check (semester in ('Fall', 'Winter', 'Spring', 'Summer')),
+    ->   year                   numeric(4,0) check (year > 1701 and year < 2100),
+    ->   building               varchar(15),
+    ->   room_number            varchar(7),
+    ->   time_slot_id           varchar(4),
+    ->   primary key (course_id, sec_id, semester, year),
+    ->   foreign key (course_id) references course (course_id)
+    ->          on delete cascade,
+    ->   foreign key (building, room_number) references classroom (building, room_number)
+    ->          on delete set null
+    ->  );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show columns from section;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| course_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id       | varchar(8)   | NO   | PRI | NULL    |       |
+| semester     | varchar(6)   | NO   | PRI | NULL    |       |
+| year         | decimal(4,0) | NO   | PRI | NULL    |       |
+| building     | varchar(15)  | YES  | MUL | NULL    |       |
+| room_number  | varchar(7)   | YES  |     | NULL    |       |
+| time_slot_id | varchar(4)   | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> create table teaches
+    ->  (ID                     varchar(5),
+    ->   course_id              varchar(8),
+    ->   sec_id                 varchar(8),
+    ->   semester               varchar(6),
+    ->   year                   numeric(4,0),
+    ->   primary key (ID, course_id, sec_id, semester, year),
+    ->   foreign key (course_id, sec_id, semester, year) references section (course_id, sec_id, semester, year)
+    ->          on delete cascade,
+    ->   foreign key (ID) references instructor (ID)
+    ->          on delete cascade
+    ->  );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show columns from teaches;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| semester  | varchar(6)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | NO   | PRI | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table teaches sriyanka varchar(8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sriyanka varchar(8)' at line 1
+mysql> alter table teaches add sriyanka varchar(8);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from teaches
+    -> ;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| semester  | varchar(6)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | NO   | PRI | NULL    |       |
+| sriyanka  | varchar(8)   | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table teaches add anisha varchar(8);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show columns from teaches;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| ID        | varchar(5)   | NO   | PRI | NULL    |       |
+| course_id | varchar(8)   | NO   | PRI | NULL    |       |
+| sec_id    | varchar(8)   | NO   | PRI | NULL    |       |
+| semester  | varchar(6)   | NO   | PRI | NULL    |       |
+| year      | decimal(4,0) | NO   | PRI | NULL    |       |
+| sriyanka  | varchar(8)   | YES  |     | NULL    |       |
+| anisha    | varchar(8)   | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql>

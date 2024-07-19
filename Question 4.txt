@@ -1,0 +1,80 @@
+mysql> CREATE TABLE SALES (
+    ->     Sales_No INT PRIMARY KEY,
+    ->     Sales_Name VARCHAR(100),
+    ->     Branch VARCHAR(100),
+    ->     Sales_Amount DECIMAL(10, 2),
+    ->     DOB DATE
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> INSERT INTO SALES (Sales_No, Sales_Name, Branch, Sales_Amount, DOB)
+    -> VALUES
+    -> (1, 'Alice Johnson', 'New York', 10000.00, '1985-07-14'),
+    -> (2, 'Bob Smith', 'Los Angeles', 15000.50, '1990-08-22'),
+    -> (3, 'Charlie Brown', 'Chicago', 12000.75, '1987-03-18'),
+    -> (4, 'Diana Prince', 'Houston', 18000.00, '1992-11-30'),
+    -> (5, 'Eve Adams', 'San Francisco', 20000.00, '1989-05-10');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT Branch, SUM(Sales_Amount) AS Total_Sales
+    -> FROM SALES
+    -> GROUP BY Branch;
++---------------+-------------+
+| Branch        | Total_Sales |
++---------------+-------------+
+| New York      |    10000.00 |
+| Los Angeles   |    15000.50 |
+| Chicago       |    12000.75 |
+| Houston       |    18000.00 |
+| San Francisco |    20000.00 |
++---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Branch, AVG(Sales_Amount) AS Average_Sales
+    -> FROM SALES
+    -> GROUP BY Branch;
++---------------+---------------+
+| Branch        | Average_Sales |
++---------------+---------------+
+| New York      |  10000.000000 |
+| Los Angeles   |  15000.500000 |
+| Chicago       |  12000.750000 |
+| Houston       |  18000.000000 |
+| San Francisco |  20000.000000 |
++---------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS Formatted_DOB
+    -> FROM SALES
+    -> WHERE MONTH(DOB) = 12;
+Empty set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS Formatted_DOB
+    -> FROM SALES
+    -> WHERE MONTH(DOB) = 1;
+Empty set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS Formatted_DOB
+    -> FROM SALES
+    -> WHERE MONTH(DOB) = 11;
++--------------+---------------+
+| Sales_Name   | Formatted_DOB |
++--------------+---------------+
+| Diana Prince | 30-Nov-92     |
++--------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS Formatted_DOB
+    -> FROM SALES
+    -> ORDER BY MONTHNAME(DOB);
++---------------+---------------+
+| Sales_Name    | Formatted_DOB |
++---------------+---------------+
+| Bob Smith     | 22-Aug-90     |
+| Alice Johnson | 14-Jul-85     |
+| Charlie Brown | 18-Mar-87     |
+| Eve Adams     | 10-May-89     |
+| Diana Prince  | 30-Nov-92     |
++---------------+---------------+
+5 rows in set (0.00 sec)

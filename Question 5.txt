@@ -1,0 +1,135 @@
+mysql> CREATE TABLE EMP (
+    ->     Emp_No INT PRIMARY KEY,
+    ->     Emp_Name VARCHAR(100),
+    ->     Designation VARCHAR(100),
+    ->     Basic DECIMAL(10, 2),
+    ->     DA DECIMAL(10, 2),
+    ->     HRA DECIMAL(10, 2),
+    ->     PF DECIMAL(10, 2),
+    ->     Gross_Pay DECIMAL(10, 2),
+    ->     Net_Pay DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> -- Insert records into the EMP table
+mysql> INSERT INTO EMP (Emp_No, Emp_Name, Designation, Basic, DA, HRA, PF)
+    -> VALUES
+    -> (1, 'John Doe', 'Manager', 50000.00, 10000.00, 5000.00, 2000.00),
+    -> (2, 'Jane Smith', 'Assistant Manager', 40000.00, 8000.00, 4000.00, 1500.00),
+    -> (3, 'Alice Brown', 'Clerk', 30000.00, 6000.00, 3000.00, 1000.00),
+    -> (4, 'Bob Johnson', 'Developer', 45000.00, 9000.00, 4500.00, 1800.00),
+    -> (5, 'Charlie Davis', 'Designer', 35000.00, 7000.00, 3500.00, 1200.00);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP
+    -> SET Gross_Pay = Basic + DA + HRA,
+    ->     Net_Pay = Gross_Pay - PF;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP;
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name      | Designation       | Basic    | DA       | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+
+|      1 | John Doe      | Manager           | 50000.00 | 10000.00 | 5000.00 | 2000.00 |  65000.00 | 63000.00 |
+|      2 | Jane Smith    | Assistant Manager | 40000.00 |  8000.00 | 4000.00 | 1500.00 |  52000.00 | 50500.00 |
+|      3 | Alice Brown   | Clerk             | 30000.00 |  6000.00 | 3000.00 | 1000.00 |  39000.00 | 38000.00 |
+|      4 | Bob Johnson   | Developer         | 45000.00 |  9000.00 | 4500.00 | 1800.00 |  58500.00 | 56700.00 |
+|      5 | Charlie Davis | Designer          | 35000.00 |  7000.00 | 3500.00 | 1200.00 |  45500.00 | 44300.00 |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMP
+    -> ADD Bonus DECIMAL(10, 2);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP
+    -> SET DA = DA * 1.10;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP;
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+
+| Emp_No | Emp_Name      | Designation       | Basic    | DA       | HRA     | PF      | Gross_Pay | Net_Pay  | Bonus |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+
+|      1 | John Doe      | Manager           | 50000.00 | 11000.00 | 5000.00 | 2000.00 |  65000.00 | 63000.00 |  NULL |
+|      2 | Jane Smith    | Assistant Manager | 40000.00 |  8800.00 | 4000.00 | 1500.00 |  52000.00 | 50500.00 |  NULL |
+|      3 | Alice Brown   | Clerk             | 30000.00 |  6600.00 | 3000.00 | 1000.00 |  39000.00 | 38000.00 |  NULL |
+|      4 | Bob Johnson   | Developer         | 45000.00 |  9900.00 | 4500.00 | 1800.00 |  58500.00 | 56700.00 |  NULL |
+|      5 | Charlie Davis | Designer          | 35000.00 |  7700.00 | 3500.00 | 1200.00 |  45500.00 | 44300.00 |  NULL |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMP
+    -> ADD Allowances DECIMAL(10, 2);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP
+    -> SET HRA = HRA * 1.15;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP;
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+
+| Emp_No | Emp_Name      | Designation       | Basic    | DA       | HRA     | PF      | Gross_Pay | Net_Pay  | Bonus | Allowances |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+
+|      1 | John Doe      | Manager           | 50000.00 | 11000.00 | 5750.00 | 2000.00 |  65000.00 | 63000.00 |  NULL |       NULL |
+|      2 | Jane Smith    | Assistant Manager | 40000.00 |  8800.00 | 4600.00 | 1500.00 |  52000.00 | 50500.00 |  NULL |       NULL |
+|      3 | Alice Brown   | Clerk             | 30000.00 |  6600.00 | 3450.00 | 1000.00 |  39000.00 | 38000.00 |  NULL |       NULL |
+|      4 | Bob Johnson   | Developer         | 45000.00 |  9900.00 | 5175.00 | 1800.00 |  58500.00 | 56700.00 |  NULL |       NULL |
+|      5 | Charlie Davis | Designer          | 35000.00 |  7700.00 | 4025.00 | 1200.00 |  45500.00 | 44300.00 |  NULL |       NULL |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMP
+    -> ADD Incentives DECIMAL(10, 2);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMP
+    -> SET Gross_Pay = Basic + DA + HRA;
+Query OK, 5 rows affected (0.00 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM EMP;
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+------------+
+| Emp_No | Emp_Name      | Designation       | Basic    | DA       | HRA     | PF      | Gross_Pay | Net_Pay  | Bonus | Allowances | Incentives |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+------------+
+|      1 | John Doe      | Manager           | 50000.00 | 11000.00 | 5750.00 | 2000.00 |  66750.00 | 63000.00 |  NULL |       NULL |       NULL |
+|      2 | Jane Smith    | Assistant Manager | 40000.00 |  8800.00 | 4600.00 | 1500.00 |  53400.00 | 50500.00 |  NULL |       NULL |       NULL |
+|      3 | Alice Brown   | Clerk             | 30000.00 |  6600.00 | 3450.00 | 1000.00 |  40050.00 | 38000.00 |  NULL |       NULL |       NULL |
+|      4 | Bob Johnson   | Developer         | 45000.00 |  9900.00 | 5175.00 | 1800.00 |  60075.00 | 56700.00 |  NULL |       NULL |       NULL |
+|      5 | Charlie Davis | Designer          | 35000.00 |  7700.00 | 4025.00 | 1200.00 |  46725.00 | 44300.00 |  NULL |       NULL |       NULL |
++--------+---------------+-------------------+----------+----------+---------+---------+-----------+----------+-------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_No, Emp_Name, Designation, Basic, DA, HRA, PF, Gross_Pay, Net_Pay, Dept_No
+    -> FROM EMP AS e1
+    -> WHERE Basic = (
+    ->     SELECT MIN(Basic)
+    ->     FROM EMP AS e2
+    ->     WHERE e1.Dept_No = e2.Dept_No
+    -> )
+    -> ORDER BY Dept_No;
+ERROR 1054 (42S22): Unknown column 'Dept_No' in 'field list'
+mysql> UPDATE EMP
+    -> SET Net_Pay = Net_Pay + 1200
+    -> WHERE Net_Pay < 10000;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> SELECT *
+    -> FROM EMP
+    -> WHERE Gross_Pay BETWEEN 10000 AND 20000;
+Empty set (0.00 sec)
+
+mysql> SELECT MAX(Salary) AS Max_Salary
+    -> FROM EMP;
+ERROR 1054 (42S22): Unknown column 'Salary' in 'field list'
+mysql> SELECT *
+    -> FROM EMP
+    -> WHERE Salary = (SELECT MAX(Salary) FROM EMP);
+ERROR 1054 (42S22): Unknown column 'Salary' in 'where clause'
